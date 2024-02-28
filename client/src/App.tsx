@@ -1,4 +1,7 @@
 import React, { useState, type ChangeEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "./store/store";
+import { addTodo, deleteTodo } from "./store/todoSlice";
 
 interface List {
   idx: number;
@@ -6,36 +9,21 @@ interface List {
 }
 
 function App() {
+  const dispatch = useDispatch();
+  const todoList = useSelector((state: RootState) => state.todo.todoList);
   const [todoTitle, setTodoTitle] = useState<string>("");
-  const [todoList, setTodoList] = useState<List[]>([]);
 
   const onChangeTodoTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTodoTitle(e.target.value);
   };
 
   const handleAddTodoList = () => {
-    try {
-      const newTodoTitle = todoTitle;
-      setTodoList((prevList) => [
-        ...prevList,
-        { idx: todoList.length, title: newTodoTitle },
-      ]);
-      setTodoTitle("");
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(addTodo(todoTitle));
+    setTodoTitle("");
   };
 
   const handleDeleteTodoList = (idx: number) => {
-    try {
-      const deleteIndex = idx;
-      const updatedTodoList = todoList.filter(
-        (todo) => todo.idx !== deleteIndex
-      );
-      setTodoList(updatedTodoList);
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(deleteTodo(idx));
   };
 
   return (

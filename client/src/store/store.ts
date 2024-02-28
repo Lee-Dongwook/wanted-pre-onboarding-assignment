@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
+import todoReducer from './todoSlice';
 
 const store = configureStore({
     reducer: {
-
+        todo: todoReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
     devTools: process.env.NODE_ENV !== 'production'
