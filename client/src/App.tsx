@@ -1,7 +1,12 @@
 import React, { useState, type ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import type { RootState } from "./store/store";
 import { addTodo, deleteTodo } from "./store/todoSlice";
+
+import TodoInput from "./components/Input";
+import TodoButton from "./components/Button";
+import TodoList from "./components/List";
 
 interface List {
   idx: number;
@@ -28,38 +33,26 @@ function App() {
 
   return (
     <div className="container mx-auto">
-      <input
+      <TodoInput
         className="border rounded px-4 py-2 w-1/2 text-center"
         type="text"
         value={todoTitle}
         onChange={onChangeTodoTitle}
         placeholder="input"
       />
-      <button
+      <TodoButton
+        title="Add"
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={handleAddTodoList}
-      >
-        Add
-      </button>
+      />
       <br />
       {todoList.map((todo: List) => {
         return (
-          <div
-            className="w-1/2 h-10 border flex justify-between"
+          <TodoList
             key={todo.idx}
-          >
-            <input
-              className="bg-whitesmoke w-4/5 text-center"
-              value={todo.title}
-              disabled
-            />
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleDeleteTodoList(todo.idx)}
-            >
-              Delete
-            </button>
-          </div>
+            title={todo.title}
+            onClick={() => handleDeleteTodoList(todo.idx)}
+          />
         );
       })}
     </div>
